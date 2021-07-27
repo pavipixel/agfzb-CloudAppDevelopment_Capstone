@@ -12,11 +12,10 @@ from django.utils.timezone import now
 class CarMake(models.Model):
     Name = models.CharField(null=False, max_length=30)
     Description = models.CharField(max_length=1000)
-    
+
     def __str__(self):
         return "Name: " + self.Name + "," + \
                "Description: " + self.Description
-
 
 # <HINT> Create a Car Model model `class CarModel(models.Model):`:
 # - Many-To-One relationship to Car Make model (One Car Make has many Car Models, using ForeignKey field)
@@ -38,17 +37,37 @@ class CarModel(models.Model):
     CarName = models.CharField(null=False, max_length=30)
     DealerId = models.IntegerField(null=False)
     CarType = models.CharField(max_length=1, choices=CAR_TYPES)
-    Year = models.DateField
+    CarYear = models.DateField(null=False, default=2010)
     
     def __str__(self):
         return "Car Name: " + self.CarName + "," + \
                "Car Type: " + self.CarType + "," + \
                "Car Make: " + self.CarMake + "," + \
                "Car Dealer: " + self.DealerId + "," + \
-               "Year: " + self.Year 
+               "Car Year: " + self.CarYear 
 
 
 # <HINT> Create a plain Python class `CarDealer` to hold dealer data
-
+class CarDealer:
+    id = 0
+    city = ""
+    state =""
+    st = ""
+    address =""
+    zip = ""
+    latitude = ""
+    longitude = ""
+    short_name = ""
+    full_name = ""
 
 # <HINT> Create a plain Python class `DealerReview` to hold review data
+class DealerReview:
+    car_make = ""
+    car_model = ""
+    car_year = ""
+    dealership = ""
+    id = ""
+    name = ""
+    purchase = ""
+    purchase_date = ""
+    review = ""
