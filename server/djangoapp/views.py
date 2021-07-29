@@ -112,9 +112,17 @@ def get_dealer_details(request, dealer_id):
     
         reviews_all = ' '.join([review.review for review in reviews_list])
     
-        return HttpResponse(reviews_all)
+        return HttpResponse(reviews_list)
 
 # Create a `add_review` view to submit a review
-# def add_review(request, dealer_id):
+def add_review(request, dealer_id):
 # ...
+    context = {}
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['psw']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            review = new dict()
+            review[]
 
