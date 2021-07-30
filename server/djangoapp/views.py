@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import CarMake, CarModel, CarDealer, DealerReview
-from .restapis import get_request, get_dealers_from_cf, get_dealer_reviews_from_cf
+from .restapis import get_request, get_dealers_from_cf, get_dealer_reviews_from_cf, post_request
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -117,25 +117,21 @@ def get_dealer_details(request, dealer_id):
 # Create a `add_review` view to submit a review
 def add_review(request, dealer_id):
 # ...
-    context = {}
-    if request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['psw']
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            url = "https://ba0e6d06.eu-gb.apigw.appdomain.cloud/api/review"
-            review = dict()
-            review["dealership"] = 5
-            review["review"] = "This is a great car dealer"
-            review["car_make"] = "Audi"
-            review["car_model"] = "A8"
-            review["car_year"] = "2005"
-            review["id"] = 10
-            review["name"] = "New Harvard"
-            review["purchase"] = "true"
-            review["purchase_date"] = "07/30/2021"
-            json_payload = dict()
-            json_payload["review"] = review
-            response = post_request(url, json_payload, dealerId=dealer_id)
-            return HttpResponse(response)
+    url = "https://ba0e6d06.eu-gb.apigw.appdomain.cloud/api/review/save-entry-review"
+    review = dict()
+    review["dealership"] = "5"
+    review["review"] = "This is a great car dealer"
+    review["car_make"] = "Audi"
+    review["car_model"] = "A8"
+    review["car_year"] = "2005"
+    review["id"] = "10"
+    review["name"] = "New Harvard"
+    review["purchase"] = "true"
+    review["purchase_date"] = "07/30/2021"
+    json_payload = dict()
+    json_payload["review"] = review
+    response = post_request(url, json_payload, dealerId=dealer_id)
+    return HttpResponse(response)
+    
+
 
