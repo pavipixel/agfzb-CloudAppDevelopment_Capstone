@@ -100,7 +100,7 @@ def get_dealerships(request):
         # Concat all dealer's short name
         dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
         # Return a list of dealer short name
-        return HttpResponse(dealer_names)
+        return HttpResponse(dealerships)
 
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
@@ -123,6 +123,19 @@ def add_review(request, dealer_id):
         password = request.POST['psw']
         user = authenticate(username=username, password=password)
         if user is not None:
-            review = new dict()
-            review[]
+            url = "https://ba0e6d06.eu-gb.apigw.appdomain.cloud/api/review"
+            review = dict()
+            review["dealership"] = 5
+            review["review"] = "This is a great car dealer"
+            review["car_make"] = "Audi"
+            review["car_model"] = "A8"
+            review["car_year"] = "2005"
+            review["id"] = 10
+            review["name"] = "New Harvard"
+            review["purchase"] = "true"
+            review["purchase_date"] = "07/30/2021"
+            json_payload = dict()
+            json_payload["review"] = review
+            response = post_request(url, json_payload, dealerId=dealer_id)
+            return HttpResponse(response)
 

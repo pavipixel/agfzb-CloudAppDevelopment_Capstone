@@ -37,14 +37,14 @@ class CarModel(models.Model):
     CarName = models.CharField(null=False, max_length=30)
     DealerId = models.IntegerField(null=False)
     CarType = models.CharField(max_length=1, choices=CAR_TYPES)
-    CarYear = models.DateField(null=False, default=2010)
+    CarYear = models.DateField()
     
     def __str__(self):
-        return "Car Name: " + self.CarName + "," + \
-               "Car Type: " + self.CarType + "," + \
-               "Car Make: " + self.CarMake + "," + \
-               "Car Dealer: " + self.DealerId + "," + \
-               "Car Year: " + self.CarYear 
+        return "Car Name: " + self.CarName
+               #"Car Type: " + self.CarType + "," + \
+               #"Car Make: " + self.CarMake.Name + "," + \
+               #"Car Dealer: " + self.DealerId
+               #"Car Year: " + self.CarYear 
 
 
 # <HINT> Create a plain Python class `CarDealer` to hold dealer data
@@ -89,6 +89,5 @@ class DealerReview:
         self.sentiment = sentiment
     
     def __str__(self):
-        return "Dealer Id: " + self.dealership + "," + \
-               "Name: " + self.name + "," + \
-               "Review: " + self.review
+        return "Name: " + self.name + "," + \
+               "Review: " + self.review 

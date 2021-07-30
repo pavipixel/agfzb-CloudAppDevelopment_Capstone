@@ -3,8 +3,8 @@ import json
 # import related models here
 from .models import CarDealer, DealerReview
 from requests.auth import HTTPBasicAuth
-from ibm_watson import NaturalLanguageUnderstandingV1
-from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+#from ibm_watson import NaturalLanguageUnderstandingV1
+#from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_watson.natural_language_understanding_v1 import Features, SentimentOptions
 
 # Create a `get_request` to make HTTP GET requests
@@ -12,18 +12,32 @@ from ibm_watson.natural_language_understanding_v1 import Features, SentimentOpti
 #                                     auth=HTTPBasicAuth('apikey', api_key))
 def get_request(url, **kwargs):
     print(kwargs)
-    print("GET from {} ".format(url))
+    print("GET from {} ".format(url)) 
     try:
-        # Call get method of requests library with URL and parameters
-        response = requests.get(url, headers={'Content-Type': 'application/json'},
+        if "apikey" in kwargs:
+            params = dict()
+            params["text"] = kwargs["text"]
+            params["version"] = kwargs["version"]
+            params["features"] = kwargs["features"]
+            params["return_analyzed_text"] = kwargs["return_analyzed_text"]
+            response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
+                                    auth=HTTPBasicAuth('apikey', kwargs["apikey"]))
+            status_code = response.status_code
+            print("With status {} ".format(status_code))
+            json_data = json.loads(response.text)
+            return json_data
+        else:
+            # Call get method of requests library with URL and parameters
+            response = requests.get(url, headers={'Content-Type': 'application/json'},
                                     params=kwargs)
+            status_code = response.status_code
+            print("With status {} ".format(status_code))
+            json_data = json.loads(response.text)
+            return json_data
     except:
         # If any error occurs
         print("Network exception occurred")
-    status_code = response.status_code
-    print("With status {} ".format(status_code))
-    json_data = json.loads(response.text)
-    return json_data
+        
 
 # Create a `post_request` to make HTTP POST requests
 # e.g., response = requests.post(url, params=kwargs, json=payload)
@@ -105,27 +119,20 @@ def get_dealer_reviews_from_cf(url, dealer_id):
 
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
 def analyze_review_sentiments(text):
+    doc =  {}
     # - Call get_request() with specified arguments
     apikey = 'joCkd7IA8AO1L7HvQEuZdUW0fqxW53DeDgcwLhWmKFq4'
     apiurl = 'https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/8cefc3ae-b857-4276-b939-f81713b59e98'
-
-    authenticator = IAMAuthenticator('{apikey}')
-    natural_language_understanding = NaturalLanguageUnderstandingV1(
-        version='2021-03-25',
-        authenticator=authenticator 
-    )
-
-    natural_language_understanding.set_service_url('{apiurl}')
-
-    response = natural_language_understanding.analyze(
-        text= text,
-        features=Features(sentiment=SentimentOptions(targets=['bonds']))).get_result()
-
+   
+    response = get_request(apiurl, text=text, version='2021-03-25',
+        features=Features(sentiment=SentimentOptions(targets=['bonds'])), apikey=apikey)
     # - Get the returned sentiment label such as Positive or Negative
     if response:
         senti = response["sentiment"]
         doc = senti["document"]
         return doc["label"]
+    return doc
+
 
 
 
