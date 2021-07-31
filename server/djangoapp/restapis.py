@@ -19,12 +19,13 @@ def get_request(url, **kwargs):
             params["text"] = kwargs["text"]
             params["version"] = kwargs["version"]
             params["features"] = kwargs["features"]
-            params["return_analyzed_text"] = kwargs["return_analyzed_text"]
+            #params["return_analyzed_text"] = kwargs["return_analyzed_text"]
+            print("Inside - API Key")
             response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
                                     auth=HTTPBasicAuth('apikey', kwargs["apikey"]))
             status_code = response.status_code
             print("With status {} ".format(status_code))
-            json_data = json.loads(response.text)
+            json_data = json.loads(response.content)
             return json_data
         else:
             # Call get method of requests library with URL and parameters
@@ -121,16 +122,18 @@ def get_dealer_reviews_from_cf(url, dealer_id):
 def analyze_review_sentiments(text):
     doc =  {}
     # - Call get_request() with specified arguments
-    apikey = 'joCkd7IA8AO1L7HvQEuZdUW0fqxW53DeDgcwLhWmKFq4'
-    apiurl = 'https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/8cefc3ae-b857-4276-b939-f81713b59e98'
+    apikey = 'XN818Vy1ipBkhq-uOF4Xaz5WpjVRX7S2lgfuv9CrfIN5'
+    apiurl = 'https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/d0cc8052-83e4-4519-8f09-b731cbacec91'
    
     response = get_request(apiurl, text=text, version='2021-03-25',
-        features=Features(sentiment=SentimentOptions(targets=['bonds'])), apikey=apikey)
+        features=Features(sentiment=SentimentOptions(targets=['Good','bad'])), apikey=apikey)
     # - Get the returned sentiment label such as Positive or Negative
     if response:
-        senti = response["sentiment"]
-        doc = senti["document"]
-        return doc["label"]
+        print("Response from IBM Watson")
+        print(response)
+        #senti = response["sentiment"]
+        #doc = senti["document"]
+        #return doc["label"]
     return doc
 
 

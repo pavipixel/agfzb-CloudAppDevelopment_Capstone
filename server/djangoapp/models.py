@@ -37,7 +37,7 @@ class CarModel(models.Model):
     CarName = models.CharField(null=False, max_length=30)
     DealerId = models.IntegerField(null=False)
     CarType = models.CharField(max_length=1, choices=CAR_TYPES)
-    CarYear = models.DateField()
+    #CarYear = models.DateField()
     
     def __str__(self):
         return "Car Name: " + self.CarName

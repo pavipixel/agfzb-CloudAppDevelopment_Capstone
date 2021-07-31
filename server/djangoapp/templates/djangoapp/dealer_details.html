@@ -46,13 +46,15 @@
             <div class="card">
                 <img class="card-img-left">
                 <div class="card-body">
-                    <div class="card-title">review.car_make</div>
-                    <div class="card-title">review.car_model</div>
-                    <div class="card-title">review.car_year</div>
-                    <div class="card-text">review.review</div>
+                    <div class="card-title"> {{ review.car_make }}</div>
+                    <div class="card-title">{{ review.car_model }}</div>
+                    <div class="card-title">{{ review.car_year }}</div>
+                    <div class="card-text">{{ review.review }}</div>
+                    <div class="card-text">{{ review.sentiment }}</div>
                 </div>
             </div>
             {% endfor %}
+            
         </div>
     </div>
 </body>
