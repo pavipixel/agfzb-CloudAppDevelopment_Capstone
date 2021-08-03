@@ -121,14 +121,16 @@ def get_dealer_details(request, dealer_id):
         context["dealer_id"] = dealer_id
         return render(request, 'djangoapp/dealer_details.html', context)
 
+def show_review(request, dealer_id):
+    context = {}
+    return render(request, 'djangoapp/add_review.html', context)
+
 # Create a `add_review` view to submit a review
 def add_review(request, dealer_id):
 # ...
     context = {}
     user = request.user
-    print("Inside - add review-----")
-    print(request)
-    if user.is_authenicated:
+    if user.is_authenticated:
         if request.method == "GET":
             cars = CarModel.objects.filter(DealerId=dealer_id)
             context["cars"] = cars
@@ -143,12 +145,16 @@ def add_review(request, dealer_id):
             review["car_model"] = "A8"
             review["car_year"] = "2021"
             review["id"] = "15"
-            review["name"] = "New Harvard"
+            review["name"] = request.user.first_name
             review["purchase"] = request.POST["purchasecheck"]
-            review["purchase_date"] = "07/30/2021"
+            review["purchase_date"] = "08/04/2021"
             json_payload = dict()
             json_payload["review"] = review
+            print("Review Object----")
+            print(review)
             response = post_request(url, json_payload, dealerId=dealer_id)
+            print("Response -----")
+            print(response)
             return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
             #return HttpResponseRedirect(reverse(viewname='djangoapp:dealer_details"', args=(dealer_id,)))
 

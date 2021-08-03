@@ -63,7 +63,9 @@
             {% endfor %}  
         </div>
         {% if user.is_authenticated %}
-            <button class="btn btn-primary" type="submit">Click to Add Review</button>
+            <form action="{% url 'djangoapp:add_review' dealer_id%}" method="get">
+                <button class="btn btn-primary" type="submit">Click to Add Review</button>
+            </form>
         {% endif %}
     </div>
 </body>
