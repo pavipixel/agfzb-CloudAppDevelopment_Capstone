@@ -19,8 +19,6 @@ def get_request(url, **kwargs):
             params["text"] = kwargs["text"]
             params["version"] = kwargs["version"]
             params["features"] = kwargs["features"]
-            #params["return_analyzed_text"] = kwargs["return_analyzed_text"]
-            print("Inside - API Key")
             response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
                                     auth=HTTPBasicAuth('apikey', kwargs["apikey"]))
             status_code = response.status_code
@@ -126,8 +124,7 @@ def analyze_review_sentiments(text):
     # - Call get_request() with specified arguments
     apikey = 'XN818Vy1ipBkhq-uOF4Xaz5WpjVRX7S2lgfuv9CrfIN5'
     apiurl = 'https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/d0cc8052-83e4-4519-8f09-b731cbacec91/v1/analyze?version=2019-07-12'
-    #apiurl = 'https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze'
-    targets = ["Good","Bad"]
+    targets = ["Good","Bad","Great","Excellent", "Unsatisfactory"]
     sentiment["targets"] = targets
     features["sentiment"] = sentiment 
     
@@ -135,8 +132,7 @@ def analyze_review_sentiments(text):
         features=features, apikey=apikey)
     # - Get the returned sentiment label such as Positive or Negative
     if response:
-        print("Response from IBM Watson")
-        print(response)
+        
         senti = response["sentiment"]
         doc = senti["document"]
         return doc["label"]

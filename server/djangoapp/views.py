@@ -33,6 +33,10 @@ def index(request):
     context = {}
     return render(request, 'djangoapp/index.html', context)
 
+def signup(request):
+    context = {}
+    return render(request, 'djangoapp/registration.html', context)
+
 # Create a `login_request` view to handle sign in request
 def login_request(request):
     context = {}
@@ -114,33 +118,39 @@ def get_dealer_details(request, dealer_id):
         reviews_list = get_dealer_reviews_from_cf(url, dealer_id)
         #reviews_all = ' '.join([review.review for review in reviews_list])
         context["reviews_list"] = reviews_list
+        context["dealer_id"] = dealer_id
         return render(request, 'djangoapp/dealer_details.html', context)
 
 # Create a `add_review` view to submit a review
 def add_review(request, dealer_id):
 # ...
     context = {}
-    if request.method == "GET":
-        cars = CarModel.objects.filter(DealerId=dealer_id)
-        context["cars"] = cars
-        return render(request, 'djangoapp/add_review.html', context)
-    elif request.method == "POST":
-        url = "https://ba0e6d06.eu-gb.apigw.appdomain.cloud/api/review/save-entry-review"
-        review = dict()
-        review["dealership"] = dealer_id
-        review["review"] = request.POST["content"]
-        review["car_make"] = "Audi"
-        review["car_model"] = "A8"
-        review["car_year"] = "2021"
-        review["id"] = "15"
-        review["name"] = "New Harvard"
-        review["purchase"] = request.POST["purchasecheck"]
-        review["purchase_date"] = "07/30/2021"
-        json_payload = dict()
-        json_payload["review"] = review
-        response = post_request(url, json_payload, dealerId=dealer_id)
-        #return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
-        return HttpResponseRedirect(reverse(viewname='djangoapp:dealer_details"', args=(dealer_id,)))
+    user = request.user
+    print("Inside - add review-----")
+    print(request)
+    if user.is_authenicated:
+        if request.method == "GET":
+            cars = CarModel.objects.filter(DealerId=dealer_id)
+            context["cars"] = cars
+            context["dealer_id"] = dealer_id
+            return render(request, 'djangoapp/add_review.html', context)
+        elif request.method == "POST":
+            url = "https://ba0e6d06.eu-gb.apigw.appdomain.cloud/api/review/save-entry-review"
+            review = dict()
+            review["dealership"] = dealer_id
+            review["review"] = request.POST["content"]
+            review["car_make"] = "Audi"
+            review["car_model"] = "A8"
+            review["car_year"] = "2021"
+            review["id"] = "15"
+            review["name"] = "New Harvard"
+            review["purchase"] = request.POST["purchasecheck"]
+            review["purchase_date"] = "07/30/2021"
+            json_payload = dict()
+            json_payload["review"] = review
+            response = post_request(url, json_payload, dealerId=dealer_id)
+            return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
+            #return HttpResponseRedirect(reverse(viewname='djangoapp:dealer_details"', args=(dealer_id,)))
 
 
 
