@@ -3,9 +3,7 @@ import json
 # import related models here
 from .models import CarDealer, DealerReview
 from requests.auth import HTTPBasicAuth
-#from ibm_watson import NaturalLanguageUnderstandingV1
-#from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
-#from ibm_watson.natural_language_understanding_v1 import Features, CategoriesOptions, SentimentOptions
+ 
 
 # Create a `get_request` to make HTTP GET requests
 # e.g., response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
@@ -41,8 +39,13 @@ def get_request(url, **kwargs):
 # Create a `post_request` to make HTTP POST requests
 # e.g., response = requests.post(url, params=kwargs, json=payload)
 def post_request(url, payload, **kwargs):
+    print(kwargs)
+    print("POST from {} ".format(url)) 
+    print(payload["review"])
+    data = payload["review"] 
     try:
-        response = requests.post(url, params=kwargs, json=payload)
+        #response = requests.post(url, headers={'Content-Type': 'application/json'}, params=data, data=data)
+        response = requests.post(url, data=data)
     except:
         print("Network exception occured")
     json_data = json.loads(response.text)

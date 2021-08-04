@@ -149,7 +149,7 @@ def add_review(request, dealer_id):
             review["id"] = "30"
             review["name"] = request.user.first_name
             review["purchase"] = request.POST["purchasecheck"]
-            review["purchase_date"] = request.POST["purchasedate"]
+            review["purchase_date"] = "04/08/2021"
             payload = {}
             payload["review"] = review
             print("Review Object----")
