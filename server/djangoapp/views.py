@@ -129,7 +129,7 @@ def show_review(request, dealer_id):
 def add_review(request, dealer_id):
 # ...
     context = {}
-    user = request.user
+    user = request.user 
     if user.is_authenticated:
         if request.method == "GET":
             cars = CarModel.objects.filter(DealerId=dealer_id)
@@ -138,21 +138,23 @@ def add_review(request, dealer_id):
             return render(request, 'djangoapp/add_review.html', context)
         elif request.method == "POST":
             url = "https://ba0e6d06.eu-gb.apigw.appdomain.cloud/api/review/save-entry-review"
-            review = dict()
+            review = {}
             review["dealership"] = dealer_id
             review["review"] = request.POST["content"]
-            review["car_make"] = "Audi"
-            review["car_model"] = "A8"
+            carselect = request.POST["car"]
+            carsel = CarModel.objects.filter(CarName=carselect)
+            review["car_make"] = carsel[0].CarMake.Name
+            review["car_model"] = carsel[0].CarName
             review["car_year"] = "2021"
-            review["id"] = "15"
+            review["id"] = "30"
             review["name"] = request.user.first_name
             review["purchase"] = request.POST["purchasecheck"]
-            review["purchase_date"] = "08/04/2021"
-            json_payload = dict()
-            json_payload["review"] = review
+            review["purchase_date"] = request.POST["purchasedate"]
+            payload = {}
+            payload["review"] = review
             print("Review Object----")
             print(review)
-            response = post_request(url, json_payload, dealerId=dealer_id)
+            response = post_request(url, payload, dealerId=dealer_id)
             print("Response -----")
             print(response)
             return redirect("djangoapp:dealer_details", dealer_id=dealer_id)

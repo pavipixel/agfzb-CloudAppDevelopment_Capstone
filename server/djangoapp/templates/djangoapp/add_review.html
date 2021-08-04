@@ -8,7 +8,11 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
-
+    <script type="text/javascript">
+      $('.date-own').datepicker({
+         format: 'mm/dd/yyyy'
+       });
+    </script>
 </head>
     <body>
     <!--Add review form here -->
@@ -25,17 +29,20 @@
                     <label for="purchasecheck">Have you purchased the car from the Car Dealer?</label>
                 </div>
                 <div class="form-group">
-                    <label for="car"><b>Select your car model</b></label>
+                    <label for="car"><b>Select Your Car Model:</b></label>
                     <select name="car" id="car" class="form-select" required>
                         {% for car in cars %}
-                            <option selected value={{car.id}}>{{car.name}}-{{car.CarMake.Name}}</option>
+                            <option selected value="{{car.CarName}}">{{car.CarMake.Name}}-{{car.CarName}}</option>
                         {% endfor %}
-                    </select>
+                    </select>   
+                </div>
+                <div class="form-group">
+                    <label for="purchasedate"><b>Select Your Purchase Date:</b></label>
+                    <input class="date-own form-control" type="date" name="purchasedate" id="purchasedate">
                 </div>
                 <div>
                     {% csrf_token %}
-                    <button class="button" type="submit" [disabled]="!reviewForm.valid" >Submit</button>
-
+                    <button class="button" type="submit" [disabled]="!reviewForm.valid" >Submit</button> 
                 </div>
             </div>
         </form>
