@@ -10,7 +10,7 @@ from requests.auth import HTTPBasicAuth
 #                                     auth=HTTPBasicAuth('apikey', api_key))
 def get_request(url, **kwargs):
     print(kwargs)
-    print("GET from {} ".format(url)) 
+    print("GET from {} ".format(url))  
     try:
         if "apikey" in kwargs:
             params = dict()
@@ -38,18 +38,27 @@ def get_request(url, **kwargs):
 
 # Create a `post_request` to make HTTP POST requests
 # e.g., response = requests.post(url, params=kwargs, json=payload)
-def post_request(url, payload, **kwargs):
+def post_request(url, json_payload, **kwargs):
     print(kwargs)
     print("POST from {} ".format(url)) 
-    print(payload["review"])
-    data = payload["review"] 
+    print(json_payload)
+    API_KEY = "d173265e-d204-4885-b35e-84addfc6cdef:AESlIZNz2mUE6RTRocFyAWgC8E7u0siWQAFFibQ96cyXSDk3CYH3acQCwjuJQJzU"
+    #data1 = {'api_dev_key':API_KEY,
+    #    'api_option':'paste',
+    #    'api_paste_code':json_payload,
+    #    'api_paste_format':'python'} 
+    #data1 = json_payload
     try:
-        #response = requests.post(url, headers={'Content-Type': 'application/json'}, params=data, data=data)
-        response = requests.post(url, data=data)
+        #response = requests.post(url, params=kwargs, json=json_payload)
+        #response = requests.post(url, data=data1, auth=('pavipixel@gmail.com', 'PixeL0611'))
+        response = requests.post(url, json=json_payload)
+        print(response)
+        status_code = response.status_code
+        print("With status {} ".format(status_code))
     except:
         print("Network exception occured")
-    json_data = json.loads(response.text)
-    return json_data
+    #json_data = json.loads(response.text)
+    return response
 
 
 # Create a get_dealers_from_cf method to get dealers from a cloud function
@@ -76,7 +85,7 @@ def get_dealers_from_cf(url, **kwargs):
 
     return results
 
-def get_dealer_by_state_from_cf(url, state):
+def get_dealer_by_state_from_cf(url, state): 
 
     results = []
     # - Call get_request() with specified arguments
