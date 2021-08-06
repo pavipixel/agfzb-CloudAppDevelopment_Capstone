@@ -10,7 +10,7 @@ from datetime import datetime
 import logging
 import json
 
-# Get an instance of a logger
+# Get an instance of a logger 
 logger = logging.getLogger(__name__)  
 
 
@@ -149,9 +149,9 @@ def add_review(request, dealer_id):
             review["id"] = "30"
             review["name"] = request.user.first_name
             review["purchase"] = request.POST["purchasecheck"]
-            review["purchase_date"] = "04/08/2021"
-            payload = {}
-            payload["review"] = review
+            review["purchase_date"] = request.POST["purchasedate"]
+            #payload = {}
+            #payload["review"] = review
             json_payload = {}
             json_payload["review"] = review
             response = post_request(url, json_payload, dealerId=dealer_id) 
