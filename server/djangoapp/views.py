@@ -11,7 +11,7 @@ import logging
 import json
 
 # Get an instance of a logger
-logger = logging.getLogger(__name__) 
+logger = logging.getLogger(__name__)  
 
 
 # Create your views here.
@@ -138,44 +138,21 @@ def add_review(request, dealer_id):
             return render(request, 'djangoapp/add_review.html', context)
         elif request.method == "POST":
             url = "https://ba0e6d06.eu-gb.apigw.appdomain.cloud/api/postreview/save-entry-review"
-            #review = {}
-            doc = {}
-            #review["dealership"] = dealer_id
-            #review["review"] = request.POST["content"]
-            #carselect = request.POST["car"]
-            #carsel = CarModel.objects.filter(CarName=carselect)
-            #review["car_make"] = carsel[0].CarMake.Name
-            #review["car_model"] = carsel[0].CarName
-            #review["car_year"] = "2021"
-            #review["id"] = "30"
-            #review["name"] = request.user.first_name
-            #review["purchase"] = request.POST["purchasecheck"]
-            #review["purchase_date"] = "04/08/2021"
-            #payload = {}
-            #payload["review"] = review
-            #print("Review Object----")
-            #print(review)
-            doc = {  
-                        "dealership": 1, 
-                        "review": "Entry from POST View", 
-                        "car_make": "BMW", 
-                        "car_model": "320d", 
-                        "car_year": "2020", 
-                        "id": "2", 
-                        "name": "Sivaram", 
-                        "purchase": "on", 
-                        #"purchase_date": "08/05/2021"
-                    }
+            review = {}
+            review["dealership"] = dealer_id
+            review["review"] = request.POST["content"]
+            carselect = request.POST["car"]
+            carsel = CarModel.objects.filter(CarName=carselect)
+            review["car_make"] = carsel[0].CarMake.Name
+            review["car_model"] = carsel[0].CarName
+            review["car_year"] = "2021"
+            review["id"] = "30"
+            review["name"] = request.user.first_name
+            review["purchase"] = request.POST["purchasecheck"]
+            review["purchase_date"] = "04/08/2021"
+            payload = {}
+            payload["review"] = review
             json_payload = {}
-            json_payload["doc"] = doc
-            response = post_request(url, json_payload, dealerId=dealer_id)
-            print("Response -----")
-            print(response)
-            return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
-            #return HttpResponseRedirect(reverse(viewname='djangoapp:dealer_details"', args=(dealer_id,)))
-
-
-
-    
-
-
+            json_payload["review"] = review
+            response = post_request(url, json_payload, dealerId=dealer_id) 
+            return redirect("djangoapp:dealer_details", dealer_id=dealer_id) 
