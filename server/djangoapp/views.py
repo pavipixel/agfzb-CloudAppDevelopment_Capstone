@@ -148,7 +148,7 @@ def add_review(request, dealer_id):
             review["car_year"] = "2021"
             review["id"] = "30"
             review["name"] = request.user.first_name
-            review["purchase"] = request.POST["purchasecheck"]
+            review["purchase"] = "true"
             review["purchase_date"] = request.POST["purchasedate"]
             #payload = {}
             #payload["review"] = review
