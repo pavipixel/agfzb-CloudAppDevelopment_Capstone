@@ -8,5 +8,25 @@
   *
   */
  function main(params) {
-	return { message: 'Hello World' };
+    if(params.state){
+        return { 
+            "query": 
+            {
+                "selector": {
+                    "st": params.state
+                },
+                "fields": ["id", "st", "state", "city", "short_name", "full_name", "address", "zip", "lat", "long"]
+            }
+        }
+    }
+    else
+    {
+        return { 
+            "query": 
+            {
+                "selector": {},
+                "fields": ["id", "st", "state", "city", "short_name", "full_name", "address", "zip", "lat", "long"]
+            }
+        }
+    }
 }

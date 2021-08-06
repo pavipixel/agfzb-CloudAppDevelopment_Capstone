@@ -10,4 +10,22 @@
 import sys
 
 def main(dict):
-    return { 'message': 'Hello world' }
+    if("dealerId" in dict):
+        return { 
+            "query": 
+            {
+                "selector": {
+                    "dealership": int(dict["dealerId"])
+                },
+                "fields": ["id", "name", "dealership", "review", "purchase", "purchase_date", "car_make", "car_model", "car_year"]
+            }
+        }
+    else:
+        return { 
+            "query": 
+            {
+                "selector": {},
+                "fields": ["id", "name", "dealership", "review", "purchase", "purchase_date", "car_make", "car_model", "car_year"]
+            }
+        }
+    

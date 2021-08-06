@@ -10,11 +10,8 @@
 import sys
 
 def main(dict):
-    entry = {}
-    if "review" in dict:
-        entry["doc"] = dict["review"]
-        return entry
-    else:
-        entry["doc"] = {}
-        return entry
-        
+    docs = dict['docs']
+    result = {}
+    result["entries"] = docs
+    return result
+    
